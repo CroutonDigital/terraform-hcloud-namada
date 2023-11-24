@@ -26,7 +26,7 @@ For best results, run namada Full nodes on Linux. namada supports the Ubuntu and
 
 Example files you can take: 
 ```bash
-git clone https://github.com/CroutonDigital/terraform-hcloud-namada.git
+git clone https://github.com/CroutonDigital/terraform-hetzner-namada.git
 cd terraform-hetzner-namada/examples/hetzner_namada-node
 ```
 
@@ -69,7 +69,3 @@ Run `terraform destroy` when you don't need these resources.
 ```bash
 ssh root@<namada node ip>
 ```
-
-### Configuration 
-
-https://docs.namada.io/guides/operator/namada-full-node#object-pruning
