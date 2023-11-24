@@ -46,8 +46,8 @@ module "namada" {
   os_base_image  = "debian-12"
   volume_size    = 500
   # mainnet / testnet / devnet Used for download genesis and docker image
-  namada_network    = "mainnet"
-  app_version    = "mainnet"
+  namada_chainid    = "public-testnet-14.5d79b6958580"
+  app_version    = "namada-v0.23.1"
 }
 ```
 
@@ -70,6 +70,6 @@ Run `terraform destroy` when you don't need these resources.
 ssh root@<namada node ip>
 ```
 
-### Configuration 
+### Configuration and Installation
 
-https://docs.namada.io/guides/operator/namada-full-node#object-pruning
+https://docs.namada.net/operators/ledger/env-vars
