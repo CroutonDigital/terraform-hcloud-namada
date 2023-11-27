@@ -36,28 +36,42 @@ write_files:
       export APP_VERSION=${version}
   - path: /opt/service/docker-compose.yml
     content: |
-    version: '3.9'
-    services:
-      namada-node:
-        container_name: namada-node
-        image: ghcr.io/anoma/namada:${version}
-        user: "0:0"
-        command: ["ledger", "run"]
-        #entrypoint: ["tail", "-f", "/dev/null"]
-        #restart: always
-        environment:
-          - CHAIN_ID="${namada_chainid}"
-          #- RUST_BACKTRACE=1
-          - BASE_DIR="/namada"
-        ports:
-          - "26656:26656"
-        volumes:
-          - ./volumes/namada:/.namada
-        logging:
-          driver: "json-file"
-          options:
-            max-size: 10m
-            max-file: "3"
+        ---
+        version: '3.9'
+        services:
+          namada-init:
+            container_name: namada-init
+            image: ghcr.io/anoma/namada:${version}
+            user: "0:0"
+            command: ["client", "utils", "join-network", "--chain-id", "${namada_chainid}"]
+            environment:
+              - CHAIN_ID="${namada_chainid}"
+              - BASE_DIR="/namada"
+            volumes:
+              - ./volumes/namada:/.namada
+          namada-node:
+            container_name: namada-node
+            image: ghcr.io/anoma/namada:${version}
+            user: "0:0"
+            command: ["ledger", "run"]
+            #entrypoint: ["tail", "-f", "/dev/null"]
+            #restart: always
+            environment:
+              - CHAIN_ID="${namada_chainid}"
+              #- RUST_BACKTRACE=1
+              - BASE_DIR="/namada"
+            ports:
+              - "26656:26656"
+            volumes:
+              - ./volumes/namada:/.namada
+            depends_on:
+              namada-init:
+                  condition: service_completed_successfully
+            logging:
+              driver: "json-file"
+              options:
+                max-size: 10m
+                max-file: "3"
 
 runcmd:
   - echo '${opt} /opt/service/volumes xfs discard,nofail,defaults 0 0' >> /etc/fstab
@@ -73,7 +87,6 @@ runcmd:
   - chmod u+x /bin/docker-up
   - systemctl enable docker
   - systemctl daemon-reload && systemctl enable docker-up.service
-  - cd /opt/service && docker run -it -P --user 0:0 -v /opt/service/volumes/namada:/.namada ghcr.io/anoma/namada:${version} client utils join-network --chain-id ${namada_chainid}
   - shutdown -r now
 
 

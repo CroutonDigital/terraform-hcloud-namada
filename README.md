@@ -38,8 +38,8 @@ variable "hcloud_token" {
 }
 
 module "namada" {
-  source         = "CroutonDigital/namada/hetzner"
-  version        = "0.0.6" # Set last module version 
+  source         = "CroutonDigital/namada/hcloud"
+  version        = "0.0.2" # Set last module version 
   hcloud_token   = var.hcloud_token
   service_name   = "namada-node"
   server_type    = "cpx11"

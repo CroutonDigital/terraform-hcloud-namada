@@ -4,9 +4,9 @@ variable "hcloud_token" {
 }
 
 module "namada-node" {
-  source          = "../../"
-#  source         = "CroutonDigital/namada/hcloud"
-#  version        = "0.0.6" # Set last module version
+#  source          = "../../"
+  source         = "CroutonDigital/namada/hcloud"
+  version        = "0.0.2" # Set last module version
 
   hcloud_token   = var.hcloud_token
   service_name   = "namada-node"
@@ -15,7 +15,7 @@ module "namada-node" {
   volume_size    = 30
   # mainnet / testnet / devnet Used for download genesis and docker image
   namada_chainid    = "public-testnet-14.5d79b6958580"
-  app_version    = "namada-v0.23.1"
+  app_version    = "2"
 }
 
 output "node_host_ip" {
